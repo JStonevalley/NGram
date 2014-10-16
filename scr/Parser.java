@@ -22,15 +22,16 @@ public class Parser {
 				for (int i = 0; i < words.length - 1; i++) {
 					words[i] = "<start>";
 				}
-				words[words.length - 1] = token;
+				words[words.length - 1] = token.replaceAll("[.!?:;,\"%#()]$", "");
+				;
 			} else {
 				for (int i = 0; i < words.length - 1; i++) {
 					words[i] = words[i + 1];
 				}
-				words[words.length - 1] = token;
+				words[words.length - 1] = token.replaceAll("[.!?:;,\"%#()]$", "");
 			}
 			wordIndex++;
-			if (token.contains(".")) {
+			if (token.matches("[\\w|\\W]*[.!?]")) {
 				for (int i = 0; i < words.length - 1; i++) {
 					words[i] = words[i + 1];
 				}
