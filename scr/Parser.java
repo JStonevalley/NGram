@@ -6,7 +6,7 @@ import java.io.FileOutputStream;
 public class Parser {
 	Kattio io;
 	Kattio outPutIo;
-	private final int n = 3;
+	private final int n = 4;
 
 	public Parser(String filePathIn, String filePathOut) throws FileNotFoundException {
 		io = new Kattio(new FileInputStream(new File(filePathIn)), new FileOutputStream(new File(
@@ -31,7 +31,9 @@ public class Parser {
 			}
 			wordIndex++;
 			if (token.matches("[\\w|\\W]*[.!?]")) {
-                io.write(printArray(words));
+                if(wordIndex >= n) {
+                    io.write(printArray(words));
+                }
 				for (int i = 0; i < words.length - 1; i++) {
 					words[i] = words[i + 1];
 				}
