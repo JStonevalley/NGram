@@ -6,7 +6,7 @@ import java.io.FileOutputStream;
 public class Parser {
 	Kattio io;
 	Kattio outPutIo;
-	private final int n = 4;
+	private final int n = 3;
 
 	public Parser(String filePathIn, String filePathOut) throws FileNotFoundException {
 		io = new Kattio(new FileInputStream(new File(filePathIn)), new FileOutputStream(new File(
@@ -20,7 +20,7 @@ public class Parser {
 		while (token != null) {
 			if (wordIndex == 0) {
 				for (int i = 0; i < words.length - 1; i++) {
-					words[i] = "<start>";
+					words[i] = "";
 				}
 				words[words.length - 1] = token.replaceAll("[.!?:;,\"%#()]$", "");
 				;
@@ -39,6 +39,12 @@ public class Parser {
 				wordIndex = 0;
 			}
 			io.write(printArray(words));
+            if(words[words.length - 1] == "<end>"){
+                for (int i = 0; i < words.length - 2; i++) {
+                    words[i] = "";
+                    io.write(printArray(words));
+                }
+            }
 			token = io.getWord();
 		}
 		io.flush();
@@ -49,7 +55,9 @@ public class Parser {
 		String reString = "";
 		for (int i = 0; i < array.length; i++) {
 			if (i != array.length - 1) {
-				reString = reString + array[i] + " ";
+                if(array[i] != "") {
+                    reString = reString + array[i] + " ";
+                }
 			} else {
 				reString = reString + array[i] + "\n";
 			}
