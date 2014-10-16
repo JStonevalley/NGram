@@ -23,7 +23,6 @@ public class Parser {
 					words[i] = "";
 				}
 				words[words.length - 1] = token.replaceAll("[.!?:;,\"%#()]$", "");
-				;
 			} else {
 				for (int i = 0; i < words.length - 1; i++) {
 					words[i] = words[i + 1];
@@ -32,18 +31,20 @@ public class Parser {
 			}
 			wordIndex++;
 			if (token.matches("[\\w|\\W]*[.!?]")) {
+                io.write(printArray(words));
 				for (int i = 0; i < words.length - 1; i++) {
 					words[i] = words[i + 1];
 				}
 				words[words.length - 1] = "<end>";
-				wordIndex = 0;
-			}
-			io.write(printArray(words));
-            if(words[words.length - 1] == "<end>"){
+                io.write(printArray(words));
                 for (int i = 0; i < words.length - 2; i++) {
                     words[i] = "";
                     io.write(printArray(words));
                 }
+				wordIndex = 0;
+			}
+            if(wordIndex >= n) {
+                io.write(printArray(words));
             }
 			token = io.getWord();
 		}
