@@ -9,10 +9,11 @@ public class Parser {
 	private Kattio io;
 	private Kattio countryIo;
     private Kattio dictionaryIo;
+    //Change for another depth of the ngrams ex: 3 trigram, 4 quadrigram
 	private final int n = 4;
 
 	public Parser(String filePathIn, String filePathOut) throws FileNotFoundException {
-        dictionaryIo = new Kattio(new FileInputStream(new File("data//dictionary2.0.txt")));
+        dictionaryIo = new Kattio(new FileInputStream(new File("data//dictionary.txt")));
         countryIo = new Kattio(new FileInputStream(new File("data//countries.txt")));
 		io = new Kattio(new FileInputStream(new File(filePathIn)), new FileOutputStream(new File(
 				filePathOut)));
