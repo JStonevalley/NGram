@@ -7,27 +7,30 @@ import java.util.HashSet;
 
 public class Parser {
 	private Kattio io;
-	private Kattio dictionaryIo;
-    private HashSet<String> dictionary;
+	private Kattio countryIo;
+    private Kattio dictionaryIo;
 	private final int n = 4;
 
 	public Parser(String filePathIn, String filePathOut) throws FileNotFoundException {
         dictionaryIo = new Kattio(new FileInputStream(new File("data//dictionary.txt")));
+        countryIo = new Kattio(new FileInputStream(new File("data//countries.txt")));
 		io = new Kattio(new FileInputStream(new File(filePathIn)), new FileOutputStream(new File(
 				filePathOut)));
 	}
 
-    private void populateDictionary(){
-        dictionary = new HashSet<String>();
-       String word = dictionaryIo.getWord();
+    private HashSet<String> populateHashSet(Kattio ioData){
+       HashSet<String> set = new HashSet<String>();
+       String word = ioData.getWord();
        while(word != null){
-           dictionary.add(word);
-           word = dictionaryIo.getWord();
+           set.add(word);
+           word = ioData.getWord();
        }
+        return set;
     }
 
 	public void generateInput() {
-        populateDictionary();
+        HashSet<String> dictionary = populateHashSet(dictionaryIo);
+        HashSet<String> countries = populateHashSet(countryIo);
 		String[] words = new String[n];
 		int wordIndex = 0;
 		String token = io.getWord();
@@ -44,7 +47,11 @@ public class Parser {
                     }
                 }
                 String potentialWord = token.replaceAll("^[.!?:;,\"%#()-_\\*\\^]*[.!?:;,\"%#()-_*^]*$", "");
-                if(!dictionary.contains(potentialWord)){
+                potentialWord = token.replace("'", "");
+                if(countries.contains(potentialWord)){
+                    potentialWord = "<country>";
+                }
+                else if (!dictionary.contains(potentialWord)){
                     potentialWord = "<unk>";
                 }
                 words[words.length - 1] = potentialWord;
