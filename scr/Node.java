@@ -18,7 +18,10 @@ public class Node {
 	public void addChild(Node node) {
 		children.add(node);
 	}
-	
+
+    /**
+     * Returns the child of this node that contains the parameter
+     */
 	public Node getChildWithWord(String word) {
 		for (Node childNode : children) {
 			if (childNode.word.equals(word)) {

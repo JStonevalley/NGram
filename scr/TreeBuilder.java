@@ -8,21 +8,20 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 
-public class InputRead {
+public class TreeBuilder {
 	
 	public HashMap<String, Node> treeHash;
 	private static String FILE_NAME;
 	private static int N = 4;
 	
-	public InputRead(String fileName) {
+	public TreeBuilder(String fileName) {
         FILE_NAME = fileName;
 		treeHash = new HashMap<String, Node>();
-		readInput();
-		System.out.println("F'cking done!");
+		buildTree();
 		printTree();
 	}
 	
-	private void readInput() {
+	private void buildTree() {
 		BufferedReader in = null;
 		try {
 			File file = new File(FILE_NAME);
@@ -40,17 +39,19 @@ public class InputRead {
 					String word = words[i];
 					Node startNode = treeHash.get(word);
 					
-					//if word doesn't exist at top of tree, add it
+					//if first word in sequence
 					if (i == 0) {
+                        //if word does not exist at top of tree, then add it.
 						if (startNode == null) {
 							startNode = new Node(null, word);
 							treeHash.put(word, startNode);
 						} else {
 							startNode.occurences++;
 						}
-                        prevNode = startNode;
+                        prevNode = startNode; //update previous node
 					} else {
 						Node child;
+                        //if node does not exist as a child to previous node, then add it
 						if ((child = prevNode.getChildWithWord(word)) == null) {
 							Node newNode = new Node(prevNode, word);
 							prevNode.addChild(newNode);
@@ -68,7 +69,10 @@ public class InputRead {
 			e.printStackTrace();
 		}
 	}
-	
+
+    /**
+     * Prints a text representation of the tree. The printing is done depth-first.
+     */
 	private void printTree() {
 		Iterator<String> words = treeHash.keySet().iterator();
 		for (int i = 0; i < treeHash.size(); i++) {
