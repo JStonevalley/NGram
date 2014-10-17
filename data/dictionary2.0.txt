@@ -1,3 +1,4 @@
+a
 aardvark
 aardwolf
 aaron
@@ -24964,6 +24965,7 @@ hysteric
 hysterical
 hysterically
 hysterics
+i
 iambic
 iambus
 iatrogenic
@@ -34164,6 +34166,7 @@ nympholepsy
 nymphomania
 nymphomaniac
 nymphs
+o
 oaf
 oafish
 oafs
@@ -34397,6 +34400,7 @@ ocelot
 ocelots
 ochre
 ochres
+oclock
 octagon
 octagonal
 octagons

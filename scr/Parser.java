@@ -12,7 +12,7 @@ public class Parser {
 	private final int n = 4;
 
 	public Parser(String filePathIn, String filePathOut) throws FileNotFoundException {
-        dictionaryIo = new Kattio(new FileInputStream(new File("data//dictionary.txt")));
+        dictionaryIo = new Kattio(new FileInputStream(new File("data//dictionary2.0.txt")));
         countryIo = new Kattio(new FileInputStream(new File("data//countries.txt")));
 		io = new Kattio(new FileInputStream(new File(filePathIn)), new FileOutputStream(new File(
 				filePathOut)));
@@ -46,8 +46,9 @@ public class Parser {
                         words[i] = words[i + 1];
                     }
                 }
-                String potentialWord = token.replaceAll("^[.!?:;,\"%#()-_\\*\\^]*[.!?:;,\"%#()-_*^]*$", "");
-                potentialWord = token.replace("'", "");
+                String potentialWord = token.replaceAll("^[.!?:;,\"%#()-_\\*\\^]*", "");
+                potentialWord = potentialWord.replaceAll("[.!?:;,\"%#()-_*^]*$", "");
+                potentialWord = potentialWord.replace("'", "");
                 if(countries.contains(potentialWord)){
                     potentialWord = "<country>";
                 }
