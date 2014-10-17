@@ -15,7 +15,8 @@ public class TreeBuilder {
 		treeHash = new HashMap<String, Node>();
 		buildTree();
         OUTPUT_FILE_NAME = "output";
-		printTree(new File(OUTPUT_FILE_NAME));
+//        printTree(null); //print to system.out
+		printTree(new File(OUTPUT_FILE_NAME)); //print to file
 	}
 	
 	private void buildTree() {
@@ -90,6 +91,11 @@ public class TreeBuilder {
                 printNodeToFile(child, 0, out);
                 out.print("\n");
             }
+            // add newline between trees
+            if (out != null)
+                out.write("\n");
+            else
+                System.out.println("");
 		}
 
         if (out != null)
@@ -102,7 +108,7 @@ public class TreeBuilder {
 		}
 		System.out.println("{" + node.word + "(" + node.occurences + "), ");
 		for (int i = 0; i < node.children.size(); i++) {
-			printNode(node.children.get(i), depth+1);
+			printNode(node.children.get(i), depth + 1);
 		}
         System.out.print("}");
 	}
@@ -113,7 +119,7 @@ public class TreeBuilder {
         }
         out.write("{" + node.word + "(" + node.occurences + "), \n");
         for (int i = 0; i < node.children.size(); i++) {
-            printNodeToFile(node.children.get(i), depth+1, out);
+            printNodeToFile(node.children.get(i), depth + 1, out);
         }
         out.write("}");
     }
