@@ -19,18 +19,9 @@ public class Node {
 		children.add(node);
 	}
 	
-	public boolean hasChildWithWord(String word) {
-		for (Node childNode : children) {
-			if (childNode.word == word) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	public Node getChildWithWord(String word) {
 		for (Node childNode : children) {
-			if (childNode.word == word) {
+			if (childNode.word.equals(word)) {
 				return childNode;
 			}
 		}
