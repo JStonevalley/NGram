@@ -12,7 +12,7 @@ public class Node {
 		this.word = word;
 		this.parent = parent;
 		occurences = 1;
-		children = new ArrayList<>();
+		children = new ArrayList<Node>();
 	}
 	
 	public void addChild(Node node) {

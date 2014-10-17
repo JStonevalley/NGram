@@ -11,15 +11,12 @@ import java.util.Iterator;
 public class InputRead {
 	
 	public HashMap<String, Node> treeHash;
-	private static String FILE_NAME = "/Users/Erik/Desktop/testtext.txt";
+	private static String FILE_NAME;
 	private static int N = 4;
 	
-	public static void main(String[] args) {
-		new InputRead();
-	}
-	
-	public InputRead() {
-		treeHash = new HashMap<>();
+	public InputRead(String fileName) {
+        FILE_NAME = fileName;
+		treeHash = new HashMap<String, Node>();
 		readInput();
 		System.out.println("F'cking done!");
 		printTree();
@@ -48,10 +45,10 @@ public class InputRead {
 						if (startNode == null) {
 							startNode = new Node(null, word);
 							treeHash.put(word, startNode);
-							prevNode = startNode;
 						} else {
-							prevNode.occurences++;
+							startNode.occurences++;
 						}
+                        prevNode = startNode;
 					} else {
 						Node child;
 						if ((child = prevNode.getChildWithWord(word)) == null) {

@@ -18,6 +18,7 @@ public class Parser {
 		int wordIndex = 0;
 		String token = io.getWord();
 		while (token != null) {
+            token = token.toLowerCase();
 			if (wordIndex == 0) {
 				for (int i = 0; i < words.length - 1; i++) {
 					words[i] = "";
