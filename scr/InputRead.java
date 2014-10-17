@@ -57,6 +57,7 @@ public class InputRead {
 							prevNode = newNode;
 						} else {
 							child.occurences++;
+                            prevNode = child;
 						}
 					}
 				}
@@ -74,6 +75,7 @@ public class InputRead {
 			String word = words.next();
 			Node child = treeHash.get(word);
 			printNode(child, 0);
+            System.out.println("");
 		}
 	}
 	
@@ -81,11 +83,10 @@ public class InputRead {
 		if (depth == N) {
 			return;
 		}
-		System.out.println(node.word+", ");
+		System.out.println(node.word+"("+node.occurences+"), ");
 		for (int i = 0; i < node.children.size(); i++) {
 			printNode(node.children.get(i), depth+1);
 		}
-		System.out.println("");
 	}
 
 }
