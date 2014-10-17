@@ -5,21 +5,14 @@ import java.util.Iterator;
 
 public class TreeBuilder {
 	
-	public HashMap<String, Node> treeHash;
 	private static String INPUT_FILE_NAME;
-    private static String OUTPUT_FILE_NAME;
 	private static int N = 4;
 	
 	public TreeBuilder(String fileName) {
         INPUT_FILE_NAME = fileName;
-		treeHash = new HashMap<String, Node>();
-		buildTree();
-        OUTPUT_FILE_NAME = "data//output";
-//        printTree(null); //print to system.out
-		printTree(new File(OUTPUT_FILE_NAME)); //print to file
 	}
 	
-	private void buildTree() {
+	public HashMap<String, Node> buildTree(HashMap<String, Node> treeHash) {
 		BufferedReader in = null;
 		try {
 			File file = new File(INPUT_FILE_NAME);
@@ -66,12 +59,13 @@ public class TreeBuilder {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+        return treeHash;
 	}
 
     /**
      * Prints a text representation of the tree. The printing is done depth-first.
      */
-	private void printTree(File file) {
+	public void printTree(HashMap<String, Node> treeHash, File file) {
         Kattio out = null;
         if (file != null)
             try {
