@@ -14,7 +14,7 @@ public class TreeBuilder {
         INPUT_FILE_NAME = fileName;
 		treeHash = new HashMap<String, Node>();
 		buildTree();
-        OUTPUT_FILE_NAME = "output";
+        OUTPUT_FILE_NAME = "data//output";
 //        printTree(null); //print to system.out
 		printTree(new File(OUTPUT_FILE_NAME)); //print to file
 	}
