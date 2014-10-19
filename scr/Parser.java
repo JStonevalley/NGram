@@ -10,6 +10,7 @@ public class Parser {
 	private Kattio io;
 	// private Kattio countryIo;
     private Kattio dictionaryIo;
+    //Change for another depth of the ngrams ex: 3 trigram, 4 quadrigram
 	private final int n = 4;
     private List<Category> categories;
 
