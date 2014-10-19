@@ -101,8 +101,9 @@ public class TreeBuilder {
 			return;
 		}
 		System.out.println("{" + node.word + "(" + node.occurences + "), ");
-		for (int i = 0; i < node.children.size(); i++) {
-			printNode(node.children.get(i), depth + 1);
+		for (Node child : node.children.values()) {
+		// for (int i = 0; i < node.children.size(); i++) {
+			printNode(child, depth + 1);
 		}
         System.out.print("}");
 	}
@@ -112,8 +113,10 @@ public class TreeBuilder {
             return;
         }
         out.write("{" + node.word + "(" + node.occurences + "), \n");
-        for (int i = 0; i < node.children.size(); i++) {
-            printNodeToFile(node.children.get(i), depth + 1, out);
+		for (Node child : node.children.values()) {
+        // for (int i = 0; i < node.children.size(); i++) {
+			printNodeToFile(child, depth + 1, out);
+            // printNodeToFile(node.children.get(i), depth + 1, out);
         }
         out.write("}");
     }
