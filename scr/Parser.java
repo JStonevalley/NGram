@@ -4,18 +4,21 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class Parser {
 	private Kattio io;
-	private Kattio countryIo;
+	// private Kattio countryIo;
     private Kattio dictionaryIo;
 	private final int n = 4;
+    private List<Category> categories;
 
-	public Parser(String filePathIn, String filePathOut) throws FileNotFoundException {
-        dictionaryIo = new Kattio(new FileInputStream(new File("data//dictionary2.0.txt")));
-        countryIo = new Kattio(new FileInputStream(new File("data//countries.txt")));
+	public Parser(String filePathIn, String filePathOut, List<Category> categories) throws FileNotFoundException {
+        dictionaryIo = new Kattio(new FileInputStream(new File("..//data//dictionary2.0.txt")));
+        // countryIo = new Kattio(new FileInputStream(new File("..//data//countries.txt")));
 		io = new Kattio(new FileInputStream(new File(filePathIn)), new FileOutputStream(new File(
 				filePathOut)));
+        this.categories = categories;
 	}
 
     private HashSet<String> populateHashSet(Kattio ioData){
@@ -30,7 +33,7 @@ public class Parser {
 
 	public void generateInput() {
         HashSet<String> dictionary = populateHashSet(dictionaryIo);
-        HashSet<String> countries = populateHashSet(countryIo);
+        // HashSet<String> countries = populateHashSet(countryIo);
 		String[] words = new String[n];
 		int wordIndex = 0;
 		String token = io.getWord();
@@ -49,12 +52,16 @@ public class Parser {
                 String potentialWord = token.replaceAll("^[.!?:;,\"%#()-_\\*\\^]*", "");
                 potentialWord = potentialWord.replaceAll("[.!?:;,\"%#()-_*^]*$", "");
                 potentialWord = potentialWord.replace("'", "");
-                if(countries.contains(potentialWord)){
-                    potentialWord = "<country>";
+                
+                if (!dictionary.contains(potentialWord)) {
+                    Category category = null;
+                    if ((category = Category.categorize(potentialWord, categories)) != null) {
+                        potentialWord = category.getName();
+                    } else {
+                        potentialWord = "<unk>";
+                    }
                 }
-                else if (!dictionary.contains(potentialWord)){
-                    potentialWord = "<unk>";
-                }
+
                 words[words.length - 1] = potentialWord;
                 wordIndex++;
                 if (token.matches("[\\w|\\W]*[.!?]")) {
