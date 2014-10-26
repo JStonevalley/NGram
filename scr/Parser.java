@@ -68,14 +68,16 @@ public class Parser {
                     if (wordIndex >= n) {
                         io.write(printArray(words));
                     }
-                    for (int i = 0; i < words.length - 1; i++) {
-                        words[i] = words[i + 1];
-                    }
-                    words[words.length - 1] = "<end>";
-                    io.write(printArray(words));
-                    for (int i = 0; i < words.length - 2; i++) {
-                        words[i] = "";
+                    if (categories != null) {
+                        for (int i = 0; i < words.length - 1; i++) {
+                            words[i] = words[i + 1];
+                        }
+                        words[words.length - 1] = "<end>";
                         io.write(printArray(words));
+                        for (int i = 0; i < words.length - 2; i++) {
+                            words[i] = "";
+                            io.write(printArray(words));
+                        }
                     }
                     wordIndex = 0;
                 }
