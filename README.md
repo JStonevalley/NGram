@@ -12,6 +12,10 @@ Result without categories:
 java Main nocategory < ../data/toInputRead 
 
 
+--- PREPARE DICTIONARU ---
+
+java Main preparedictionary dictionary > dictionary_nocat
+
 --- PARSING ---
 
 No tags:

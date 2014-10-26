@@ -23,9 +23,9 @@ public class Main {
             categories.add(new RegexCategory("number", "-?[,\\.\\d]+")); // TODO this has to be included when reading corpus
         }
 
-        if (argsList.get(0).equals('prepareictionary')) {
+        if (argsList.get(0).equals("preparedictionary")) {
 
-            NoCategoryDictionary(argsList.get(1), categories);
+            noCategoriesDictionary tmp = new noCategoriesDictionary(argsList.get(1), categories);
 
         } else if (argsList.get(0).equals("parse")) {
 
@@ -62,19 +62,22 @@ public class Main {
             TreeBuilder treeBuilderCat = new TreeBuilder(inputFileCat);
             TreeBuilder treeBuilderNocat = new TreeBuilder(inputFileNocat);
             
-            HashMap<String, Node> hashTreeCat = treeBuilder.buildTree(new HashMap<String, Node>());
-            HashMap<String, Node> hashTreeNocat = treeBuilder.buildTree(new HashMap<String, Node>());
+            HashMap<String, Node> hashTreeCat = treeBuilderCat.buildTree(new HashMap<String, Node>());
+            HashMap<String, Node> hashTreeNocat = treeBuilderNocat.buildTree(new HashMap<String, Node>());
             
             // n
             int n = 4;
 
             // Predictor
-            NextWordPredictor predictor = new NextWordPredictor(hashTree, categories, n);
+            NextWordPredictor predictorCat = new NextWordPredictor(hashTreeCat, categories, n);
+            NextWordPredictor predictorNocat = new NextWordPredictor(hashTreeNocat, categories, n);
 
             System.out.println("Created predictor. Please, enter words..."); 
 
-            int numCorrectGuesses = 0;
-            int numWrongGuesses = 0;
+            int numCorrectGuessesCat = 0;
+            int numWrongGuessesCat = 0;
+            int numCorrectGuessesNocat = 0;
+            int numWrongGuessesNocat = 0;
 
             // Continuous word by word reading
             LinkedList<String> previousWords = new LinkedList<String>();
@@ -106,41 +109,55 @@ public class Main {
                 }
 
                 // Get the best predictions given the previous words
-                ArrayList<String> predictions = predictor.nextWord(previousWords);
+                ArrayList<String> predictionsCat = predictorCat.nextWord(previousWords);
+                ArrayList<String> predictionsNocat = predictorNocat.nextWord(previousWords);
                 
                 // No predictions counts as wrong guess
-                if (predictions.isEmpty()) {
-                    System.out.printf("Previous words: %-30s Correct: %-12s   Guess: %-12s   ", sb.toString(), correctWord, "");
-                    System.out.println("WRONG");
-                    numWrongGuesses++;
-                    continue;
-                }
-
-                // Guess the first among the suggested predictions
-                String guess = predictions.get(0);
-
+                // Guess the first among the suggested predictions or "" if no predition
+                String guessCat = predictionsCat.isEmpty() ? "" : predictionsCat.get(0);
+                String guessNocat = predictionsNocat.isEmpty() ? "" : predictionsNocat.get(0);
 
                 // Print the result
-                System.out.printf("Previous words: %-30s Correct: %-12s   Guess: %-12s   ", sb.toString(), correctWord, guess);
-                
-                if (guess.equals(correctWord)) {
-                    System.out.print("CORRECT");
-                    numCorrectGuesses++;
+                String catCorrect;
+                if (guessCat.equals(correctWord)) {
+                    catCorrect = "C";
+                    numCorrectGuessesCat++;
                 } else {
-                    System.out.print("WRONG");
-                    numWrongGuesses++;
+                    catCorrect = " ";
+                    numWrongGuessesCat++;
                 }
 
-                System.out.println();
+                String nocatCorrect;
+                if (guessNocat.equals(correctWord)) {
+                    nocatCorrect = "C";
+                    numCorrectGuessesNocat++;
+                } else {
+                    nocatCorrect = " ";
+                    numWrongGuessesNocat++;
+                }
+
+                if (catCorrect != nocatCorrect) {
+                    System.out.printf("Previous words: %-30s Correct: %-12s   Cat: %-12s   %s   Nocat: %-12s   %s", 
+                        sb.toString(), correctWord, guessCat, catCorrect, guessNocat, nocatCorrect);
+                    System.out.println();
+                }
             }
 
             // Sum things up
-            int totalGuesses = numCorrectGuesses + numWrongGuesses;
+            int totalGuessesCat = numCorrectGuessesCat + numWrongGuessesCat;
+            int totalGuessesNocat = numCorrectGuessesNocat + numWrongGuessesNocat;
+            assert (totalGuessesCat == totalGuessesNocat);
+            int totalGuesses = totalGuessesCat;
+
             System.out.println();
             System.out.println("--- DONE ---");
-            System.out.printf("Correct guesses:     %6d / %d\n", numCorrectGuesses, totalGuesses);
-            System.out.printf("Wrong guesses:       %6d / %d\n", numWrongGuesses, totalGuesses);
-            System.out.printf("Ratio: %f\n", (float) numCorrectGuesses / totalGuesses);
+            System.out.printf("Correct guesses cat:       %6d / %d\n", numCorrectGuessesCat, totalGuesses);
+            System.out.printf("Wrong guesses cat:         %6d / %d\n", numWrongGuessesCat, totalGuesses);
+            System.out.printf("Ratio: %f\n", (float) numCorrectGuessesCat / totalGuesses);
+            
+            System.out.printf("Correct guesses no cat:    %6d / %d\n", numCorrectGuessesNocat, totalGuesses);
+            System.out.printf("Wrong guesses no cat:      %6d / %d\n", numWrongGuessesNocat, totalGuesses);
+            System.out.printf("Ratio: %f\n", (float) numCorrectGuessesNocat / totalGuesses);
         }
     }
 
