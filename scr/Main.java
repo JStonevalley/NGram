@@ -62,6 +62,7 @@ public class Main {
             TreeBuilder treeBuilderCat = new TreeBuilder(inputFileCat);
             TreeBuilder treeBuilderNocat = new TreeBuilder(inputFileNocat);
             
+
             HashMap<String, Node> hashTreeCat = treeBuilderCat.buildTree(new HashMap<String, Node>());
             HashMap<String, Node> hashTreeNocat = treeBuilderNocat.buildTree(new HashMap<String, Node>());
             
@@ -70,7 +71,7 @@ public class Main {
 
             // Predictor
             NextWordPredictor predictorCat = new NextWordPredictor(hashTreeCat, categories, n);
-            NextWordPredictor predictorNocat = new NextWordPredictor(hashTreeNocat, categories, n);
+            NextWordPredictor predictorNocat = new NextWordPredictor(hashTreeNocat, new ArrayList<Category>(), n);
 
             System.out.println("Created predictor. Please, enter words..."); 
 

@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 public class TreeBuilder {
 	
-	private static String INPUT_FILE_NAME;
+	private String INPUT_FILE_NAME;
 	private static int N = 4;
 	
 	public TreeBuilder(String fileName) {
