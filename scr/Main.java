@@ -23,8 +23,11 @@ public class Main {
             categories.add(new RegexCategory("number", "-?[,\\.\\d]+")); // TODO this has to be included when reading corpus
         }
 
-        // Parse or run algo?   
-        if (argsList.get(0).equals("parse")) {
+        if (argsList.get(0).equals('prepareictionary')) {
+
+            NoCategoryDictionary(argsList.get(1), categories);
+
+        } else if (argsList.get(0).equals("parse")) {
 
             if (argsList.contains("dontcategorize")) {
                 categories = null;
@@ -52,17 +55,22 @@ public class Main {
         
         } else {
 
-            String inputFile = argsList.get(0);
+            String inputFileCat = argsList.get(0);
+            String inputFileNocat = argsList.get(1);
 
             // Tree
-            TreeBuilder treeBuilder = new TreeBuilder(inputFile);
-            HashMap<String, Node> hashTree = treeBuilder.buildTree(new HashMap<String, Node>());
+            TreeBuilder treeBuilderCat = new TreeBuilder(inputFileCat);
+            TreeBuilder treeBuilderNocat = new TreeBuilder(inputFileNocat);
+            
+            HashMap<String, Node> hashTreeCat = treeBuilder.buildTree(new HashMap<String, Node>());
+            HashMap<String, Node> hashTreeNocat = treeBuilder.buildTree(new HashMap<String, Node>());
             
             // n
             int n = 4;
 
             // Predictor
             NextWordPredictor predictor = new NextWordPredictor(hashTree, categories, n);
+
             System.out.println("Created predictor. Please, enter words..."); 
 
             int numCorrectGuesses = 0;
