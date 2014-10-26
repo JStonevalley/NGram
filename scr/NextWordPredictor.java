@@ -28,7 +28,9 @@ public class NextWordPredictor {
 		}
 	}
 
-	public ArrayList<String> nextWord(List<String> previousWords) {
+	public ArrayList<String> nextWord(List<String> previousWords, boolean[] usedCategory) {
+		usedCategory[0] = false;
+
 		if (previousWords.size() > maxN - 1) {
 			throw new RuntimeException("Too many previous words.");
 		} else if (previousWords.size() == 0) {
@@ -41,12 +43,14 @@ public class NextWordPredictor {
 
 		// Get the first node
 		node = model.get(word);
-		if (node == null && (category = Category.categorize(word, categories)) != null)
+		if (node == null && (category = Category.categorize(word, categories)) != null) {
 			node = model.get(category.getName());
+			usedCategory[0] = true;
+		}
 		if (node == null)
 			node = model.get(UNKNOWN);
 		if (node == null)
-			return nextWord(previousWords.subList(1, previousWords.size())); // Backoff
+			return nextWord(previousWords.subList(1, previousWords.size()), usedCategory); // Backoff
 
 		// Iterate over nodes to visit
 		for (int i = 1; i < previousWords.size(); i++) {
@@ -55,12 +59,14 @@ public class NextWordPredictor {
 			word = previousWords.get(i);
 
 			node = parent.getChildWithWord(word);
-			if (node == null && (category = Category.categorize(word, categories)) != null)
+			if (node == null && (category = Category.categorize(word, categories)) != null) {
 				node = parent.getChildWithWord(category.getName());
+				usedCategory[0] = true;
+			}
 			if (node == null)
 				node = parent.getChildWithWord(UNKNOWN);
 			if (node == null)
-				return nextWord(previousWords.subList(1, previousWords.size())); // Backoff
+				return nextWord(previousWords.subList(1, previousWords.size()), usedCategory); // Backoff
 
 		}
 

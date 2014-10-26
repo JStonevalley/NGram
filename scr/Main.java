@@ -80,6 +80,11 @@ public class Main {
             int numCorrectGuessesNocat = 0;
             int numWrongGuessesNocat = 0;
 
+            int numCorrectGuessesCatWhenUsedCat = 0;
+            int numWrongGuessesCatWhenUsedCat = 0;
+            int numCorrectGuessesNocatWhenUsedCat = 0;
+            int numWrongGuessesNocatWhenUsedCat = 0;
+
             // Continuous word by word reading
             LinkedList<String> previousWords = new LinkedList<String>();
             Scanner sc = new Scanner(System.in);
@@ -110,8 +115,9 @@ public class Main {
                 }
 
                 // Get the best predictions given the previous words
-                ArrayList<String> predictionsCat = predictorCat.nextWord(previousWords);
-                ArrayList<String> predictionsNocat = predictorNocat.nextWord(previousWords);
+                boolean[] usedCat = new boolean[1];
+                ArrayList<String> predictionsCat = predictorCat.nextWord(previousWords, usedCat);
+                ArrayList<String> predictionsNocat = predictorNocat.nextWord(previousWords, new boolean[1]);
                 
                 // No predictions counts as wrong guess
                 // Guess the first among the suggested predictions or "" if no predition
@@ -119,6 +125,21 @@ public class Main {
                 String guessNocat = predictionsNocat.isEmpty() ? "" : predictionsNocat.get(0);
 
                 // Print the result
+                if (usedCat[0]) {
+                    if (guessCat.equals(correctWord)) {
+                        numCorrectGuessesCatWhenUsedCat++;
+                    } else {
+                        numWrongGuessesCatWhenUsedCat++;
+                    }
+
+                    String nocatCorrect;
+                    if (guessNocat.equals(correctWord)) {
+                        numCorrectGuessesNocatWhenUsedCat++;
+                    } else {
+                        numWrongGuessesNocatWhenUsedCat++;
+                    }
+                }
+
                 String catCorrect;
                 if (guessCat.equals(correctWord)) {
                     catCorrect = "C";
@@ -138,17 +159,18 @@ public class Main {
                 }
 
                 if (catCorrect != nocatCorrect) {
-                    System.out.printf("Previous words: %-30s Correct: %-12s   Cat: %-12s   %s   Nocat: %-12s   %s", 
-                        sb.toString(), correctWord, guessCat, catCorrect, guessNocat, nocatCorrect);
+                    System.out.printf("Previous words: %-30s Correct: %-12s   Cat: %-12s   %s   Nocat: %-12s   %s   %s", 
+                        sb.toString(), correctWord, guessCat, catCorrect, guessNocat, nocatCorrect, usedCat[0] ? "USED CATEGORY" : "");
                     System.out.println();
                 }
             }
 
             // Sum things up
-            int totalGuessesCat = numCorrectGuessesCat + numWrongGuessesCat;
-            int totalGuessesNocat = numCorrectGuessesNocat + numWrongGuessesNocat;
-            assert (totalGuessesCat == totalGuessesNocat);
-            int totalGuesses = totalGuessesCat;
+            int totalGuesses = numCorrectGuessesCat + numWrongGuessesCat;
+            assert (totalGuesses == numCorrectGuessesNocat + numWrongGuessesNocat);
+
+            int totalGuessesWhenUsedCat = numCorrectGuessesCatWhenUsedCat + numWrongGuessesCatWhenUsedCat;
+            assert (totalGuessesWhenUsedCat == numCorrectGuessesNocatWhenUsedCat + numWrongGuessesNocatWhenUsedCat);
 
             System.out.println();
             System.out.println("--- DONE ---");
@@ -159,6 +181,15 @@ public class Main {
             System.out.printf("Correct guesses no cat:    %6d / %d\n", numCorrectGuessesNocat, totalGuesses);
             System.out.printf("Wrong guesses no cat:      %6d / %d\n", numWrongGuessesNocat, totalGuesses);
             System.out.printf("Ratio: %f\n", (float) numCorrectGuessesNocat / totalGuesses);
+
+            System.out.println();
+            System.out.printf("Correct guesses cat (when used cat):       %6d / %d\n", numCorrectGuessesCatWhenUsedCat, totalGuessesWhenUsedCat);
+            System.out.printf("Wrong guesses cat (when used cat):         %6d / %d\n", numWrongGuessesCatWhenUsedCat, totalGuessesWhenUsedCat);
+            System.out.printf("Ratio: %f\n", (float) numCorrectGuessesCatWhenUsedCat / totalGuessesWhenUsedCat);
+            
+            System.out.printf("Correct guesses no cat (when used cat):    %6d / %d\n", numCorrectGuessesNocatWhenUsedCat, totalGuessesWhenUsedCat);
+            System.out.printf("Wrong guesses no cat (when used cat):      %6d / %d\n", numWrongGuessesNocatWhenUsedCat, totalGuessesWhenUsedCat);
+            System.out.printf("Ratio: %f\n", (float) numCorrectGuessesNocatWhenUsedCat / totalGuessesWhenUsedCat);
         }
     }
 
