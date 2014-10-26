@@ -4,9 +4,9 @@ import java.util.*;
 
 public class Main {
 
-    static String CORPUS_FILE = "..//data//corpus_short.txt";
-    static String TREE_INPUT_FILE = "..//data//toInputRead";
-    static String TREE_OUTPUT_FILE = "..//data//output";
+    static String CORPUS_FILE = "..//data//corpus_train.txt";
+    static String TREE_INPUT_FILE = "..//data//toInputRead_train";
+    // static String TREE_OUTPUT_FILE = "..//data//output";
 
 
     // Categories
@@ -24,7 +24,9 @@ public class Main {
         }
 
         // Parse or run algo?
-        if (argsList.contains("parse")) {
+        if (argsList.get(1).equals("parse")) {
+
+            corpusFile = argsList.get(2)
 
             System.out.println("PARSING CORPUS");
 
@@ -39,8 +41,8 @@ public class Main {
             HashMap<String, Node> hashTree = treeBuilder.buildTree(new HashMap<String, Node>());
             System.out.println(getMillisecondsSinceTime(time)+"ms -TREE BUILT");
             // treeBuilder.printTree(hashTree, null); //print to system.out
-            treeBuilder.printTree(hashTree, new File(TREE_OUTPUT_FILE)); //print to file	
-            System.out.println(getMillisecondsSinceTime(time)+"ms -TREE PRINTED/WRITTEN");
+            // treeBuilder.printTree(hashTree, new File(TREE_OUTPUT_FILE)); //print to file	
+            // System.out.println(getMillisecondsSinceTime(time)+"ms -TREE PRINTED/WRITTEN");
         
         } else {
 
