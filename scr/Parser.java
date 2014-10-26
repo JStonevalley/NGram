@@ -2,9 +2,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class Parser {
 	private Kattio io;
@@ -33,6 +31,7 @@ public class Parser {
     }
 
 	public void generateInput() {
+        HashMap<String, Integer> categoryCounter = new HashMap<String, Integer>();
         HashSet<String> dictionary = populateHashSet(dictionaryIo);
         // HashSet<String> countries = populateHashSet(countryIo);
 		String[] words = new String[n];
@@ -57,6 +56,12 @@ public class Parser {
                     Category category = null;
                     if ((category = Category.categorize(potentialWord, categories)) != null) {
                         potentialWord = category.getName();
+                        if (categoryCounter.containsKey(potentialWord)){
+                            categoryCounter.put(potentialWord, categoryCounter.get(potentialWord) + 1);
+                        }
+                        else{
+                            categoryCounter.put(potentialWord, 0);
+                        }
                     } else {
                         potentialWord = "<unk>";
                     }
@@ -87,6 +92,12 @@ public class Parser {
             }
 			token = io.getWord();
 		}
+        Set<String> keys = categoryCounter.keySet();
+        Iterator keysIterator = keys.iterator();
+        while(keysIterator.hasNext()){
+            String category = (String)keysIterator.next();
+            System.out.println(category + ": " + categoryCounter.get(category));
+        }
 		io.flush();
 		io.close();
 	}
