@@ -26,6 +26,10 @@ public class Main {
         // Parse or run algo?   
         if (argsList.get(0).equals("parse")) {
 
+            if (argsList.contains("dontcategorize")) {
+                categories = null;
+            }
+
             String dictionary = argsList.get(1);
             String corpusFile = argsList.get(2);
             String outTreeFile = argsList.get(3);
@@ -85,11 +89,21 @@ public class Main {
                     previousWords.add(words[i]);
                 }
 
+                // The correct word is the last on the line
+                String correctWord = words[words.length - 1];
+                
+                StringBuilder sb = new StringBuilder(30);
+                for (String word : previousWords) {
+                    sb.append(word).append(" ");
+                }
+
                 // Get the best predictions given the previous words
                 ArrayList<String> predictions = predictor.nextWord(previousWords);
                 
                 // No predictions counts as wrong guess
                 if (predictions.isEmpty()) {
+                    System.out.printf("Previous words: %-30s Correct: %-12s   Guess: %-12s   ", sb.toString(), correctWord, "");
+                    System.out.println("WRONG");
                     numWrongGuesses++;
                     continue;
                 }
@@ -97,16 +111,9 @@ public class Main {
                 // Guess the first among the suggested predictions
                 String guess = predictions.get(0);
 
-                // The correct word is the last on the line
-                String correctWord = words[words.length - 1];
 
                 // Print the result
-                System.out.print("Previous words: ");
-                StringBuilder sb = new StringBuilder(30);
-                for (String word : previousWords) {
-                    sb.append(word).append(" ");
-                }
-                System.out.printf("%-30s Correct: %-12s   Guess: %-12s   ", sb.toString(), correctWord, guess);
+                System.out.printf("Previous words: %-30s Correct: %-12s   Guess: %-12s   ", sb.toString(), correctWord, guess);
                 
                 if (guess.equals(correctWord)) {
                     System.out.print("CORRECT");
