@@ -53,8 +53,7 @@ public class Parser {
                 String potentialWord = token.replaceAll("^[.!?:;,\"%#()-_\\*\\^]*", "");
                 potentialWord = potentialWord.replaceAll("[.!?:;,\"%#()-_*^]*$", "");
                 potentialWord = potentialWord.replace("'", "");
-                
-                if (!dictionary.contains(potentialWord)) {
+                if (!dictionary.contains(potentialWord) && categories != null) {
                     Category category = null;
                     if ((category = Category.categorize(potentialWord, categories)) != null) {
                         potentialWord = category.getName();
