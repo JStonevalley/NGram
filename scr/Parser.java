@@ -14,8 +14,8 @@ public class Parser {
 	private final int n = 4;
     private List<Category> categories;
 
-	public Parser(String filePathIn, String filePathOut, List<Category> categories) throws FileNotFoundException {
-        dictionaryIo = new Kattio(new FileInputStream(new File("..//data//dictionary.txt")));
+	public Parser(String fileDictionary, String filePathIn, String filePathOut, List<Category> categories) throws FileNotFoundException {
+        dictionaryIo = new Kattio(new FileInputStream(new File(fileDictionary)));
         // countryIo = new Kattio(new FileInputStream(new File("..//data//countries.txt")));
 		io = new Kattio(new FileInputStream(new File(filePathIn)), new FileOutputStream(new File(
 				filePathOut)));

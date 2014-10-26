@@ -18,7 +18,7 @@ public class Main {
         
         // Categories
         ArrayList<Category> categories = new ArrayList<Category>();
-        if (!argsList.get(argsList.size() - 1).equals("nocategory")) {
+        if (!argsList.contains("nocategory")) {
             categories.add(new ListCategory("country", "..//data//countries.txt"));
             categories.add(new RegexCategory("number", "-?[,\\.\\d]+")); // TODO this has to be included when reading corpus
         }
@@ -26,14 +26,15 @@ public class Main {
         // Parse or run algo?   
         if (argsList.get(0).equals("parse")) {
 
-            String corpusFile = argsList.get(1);
-            String outTreeFile = argsList.get(2);
+            String dictionary = argsList.get(1);
+            String corpusFile = argsList.get(2);
+            String outTreeFile = argsList.get(3);
 
             System.err.println("PARSING CORPUS");
 
             //parse corpus
             long time = System.currentTimeMillis();
-            Parser parser = new Parser(corpusFile, outTreeFile, categories);
+            Parser parser = new Parser(dictionary, corpusFile, outTreeFile, categories);
             parser.generateInput();
 
             System.err.println(getMillisecondsSinceTime(time)+"ms - CORPUS PARSED");
