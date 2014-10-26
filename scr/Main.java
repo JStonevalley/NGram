@@ -4,8 +4,8 @@ import java.util.*;
 
 public class Main {
 
-    static String CORPUS_FILE = "..//data//corpus_train.txt";
-    static String TREE_INPUT_FILE = "..//data//toInputRead_train";
+    // static String CORPUS_FILE = "..//data//corpus_train.txt";
+    // static String TREE_INPUT_FILE = "..//data//toInputRead_train";
     // static String TREE_OUTPUT_FILE = "..//data//output";
 
 
@@ -18,36 +18,39 @@ public class Main {
         
         // Categories
         ArrayList<Category> categories = new ArrayList<Category>();
-        if (!argsList.contains("nocategory")) {
+        if (!argsList.get(argsList.size() - 1).equals("nocategory")) {
             categories.add(new ListCategory("country", "..//data//countries.txt"));
             categories.add(new RegexCategory("number", "-?[,\\.\\d]+")); // TODO this has to be included when reading corpus
         }
 
-        // Parse or run algo?
-        if (argsList.get(1).equals("parse")) {
+        // Parse or run algo?   
+        if (argsList.get(0).equals("parse")) {
 
-            corpusFile = argsList.get(2)
+            String corpusFile = argsList.get(1);
+            String outTreeFile = argsList.get(2);
 
-            System.out.println("PARSING CORPUS");
+            System.err.println("PARSING CORPUS");
 
             //parse corpus
             long time = System.currentTimeMillis();
-            Parser parser = new Parser(CORPUS_FILE, TREE_INPUT_FILE, categories);
+            Parser parser = new Parser(corpusFile, outTreeFile, categories);
             parser.generateInput();
 
-            System.out.println(getMillisecondsSinceTime(time)+"ms - CORPUS PARSED");
+            System.err.println(getMillisecondsSinceTime(time)+"ms - CORPUS PARSED");
             // build tree
-            TreeBuilder treeBuilder = new TreeBuilder(TREE_INPUT_FILE);
-            HashMap<String, Node> hashTree = treeBuilder.buildTree(new HashMap<String, Node>());
-            System.out.println(getMillisecondsSinceTime(time)+"ms -TREE BUILT");
+            // TreeBuilder treeBuilder = new TreeBuilder(TREE_INPUT_FILE);
+            // HashMap<String, Node> hashTree = treeBuilder.buildTree(new HashMap<String, Node>());
+            // System.out.println(getMillisecondsSinceTime(time)+"ms -TREE BUILT");
             // treeBuilder.printTree(hashTree, null); //print to system.out
             // treeBuilder.printTree(hashTree, new File(TREE_OUTPUT_FILE)); //print to file	
             // System.out.println(getMillisecondsSinceTime(time)+"ms -TREE PRINTED/WRITTEN");
         
         } else {
 
+            String inputFile = argsList.get(0);
+
             // Tree
-            TreeBuilder treeBuilder = new TreeBuilder(TREE_INPUT_FILE);
+            TreeBuilder treeBuilder = new TreeBuilder(inputFile);
             HashMap<String, Node> hashTree = treeBuilder.buildTree(new HashMap<String, Node>());
             
             // n
